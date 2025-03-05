@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход - Нумеролог</title>
+</head>
+<body>
+    <h1>Вход, ебать!</h1>
+    <form id="loginForm">
+        <label for="email">Почта:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        <label for="password">Пароль:</label><br>
+        <input type="password" id="password" name="password" required><br>
+        <button type="submit">Войти</button>
+    </form>
+    <p>Нет аккаунта? <a href="register.html">Зарегистрироваться</a></p>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDFmdHQH3UoOpvqh5lw4dDFUqk9gMEw-c0",
+        authDomain: "numerolog-v1.firebaseapp.com",
+        projectId: "numerolog-v1",
+        storageBucket: "numerolog-v1.firebasestorage.app",
+        messagingSenderId: "972681774351",
+        appId: "1:972681774351:web:e022ba3452466ec6d2aa7a"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+
+      document.getElementById('loginForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        auth.signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            alert('Вошёл, сука! Теперь иди за рекомендациями.');
+            window.location.href = 'daily.html'; // Потом сделаем эту страницу
+          })
+          .catch((error) => {
+            alert('Ошибка, пиздец: ' + error.message);
+          });
+      });
+    </script>
+</body>
+</html>
