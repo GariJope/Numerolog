@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация - Нумеролог</title>
+</head>
+<body>
+    <h1>Регистрация, ебать!</h1>
+    <form id="registerForm">
+        <label for="email">Почта:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        <label for="password">Пароль:</label><br>
+        <input type="password" id="password" name="password" required><br>
+        <label for="birthdate">Дата рождения (ДД.ММ.ГГГГ):</label><br>
+        <input type="text" id="birthdate" name="birthdate" placeholder="15.08.1990" required><br>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    <p>Уже есть аккаунт? <a href="index.html">Вход</a></p>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script>
+  // Твоя конфигурация Firebase (вставь только значения, убрав import и инициализацию аналитики)
+  const firebaseConfig = {
+    apiKey: "AIzaSyDFmdHQH3UoOpvqh5lw4dDFUqk9gMEw-c0",
+    authDomain: "numerolog-v1.firebaseapp.com",
+    projectId: "numerolog-v1",
+    storageBucket: "numerolog-v1.firebasestorage.app",
+    messagingSenderId: "972681774351",
+    appId: "1:972681774351:web:e022ba3452466ec6d2aa7a"
+  };
+
+  // Инициализация Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  // Обработка формы
+  document.getElementById('registerForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const birthdate = document.getElementById('birthdate').value;
+
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        db.collection('users').doc(user.uid).set({
+          birthdate: birthdate
+        });
+        alert('Зарегистрирован, сука! Теперь войди.');
+        window.location.href = 'index.html';
+      })
+      .catch((error) => {
+        alert('Ошибка, пиздец: ' + error.message);
+      });
+  });
+</script>
+</body>
+</html>
